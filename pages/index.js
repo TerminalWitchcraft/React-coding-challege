@@ -6,8 +6,6 @@ import axios from 'axios'
 import { Jumbotron, Container } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
-axios.defaults.baseURL = 'https://api.yelp.com/v3/businesses/';
-axios.defaults.headers.common['Authorization'] = "Bearer _Qs0d8E81UeQKoPO9iitNTSoggIqq0cj5MaWRurJANa_HntPResR9hNOKR2B3FAjxXX5o0jd182fn9m7gv3WclD0nW4jvDPAa78KFj8Eb1D7ujEsyjJYgRk1uGNeXHYx";
 
 class Home extends React.Component {
     constructor(props){
@@ -26,9 +24,9 @@ class Home extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const params = new URLSearchParams();
-        params.append('location', this.state.input)
-        axios.get("/search")
+        // const params = new URLSearchParams();
+        // params.append('location', this.state.input)
+        axios.get("http://localhost:8000/fetch", {params: {query: this.state.input}})
             .then(result => {console.log(result)
             this.setState({results: result.data})})
     }

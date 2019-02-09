@@ -8,8 +8,6 @@ class ResultBox extends React.Component {
 
     render() {
         const results = this.props.resultList;
-        console.log("This is from results")
-        console.log(results)
         if (this.props.resultList === undefined){
             return (<h3> Nothing to show here </h3>)
         } else {
