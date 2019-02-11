@@ -1,35 +1,49 @@
 import "bootstrap/dist/css/bootstrap.css";
+import React from "react";
+import axios from "axios";
+import {
+    Jumbotron,
+    Container,
+    Button,
+    Form,
+    FormGroup,
+    Label,
+    Input
+} from "reactstrap";
+
 import Layout from "../components/layout";
 import Loader from "../components/spinner";
 import ResultBox from "../components/resultBox";
-import React from "react";
-import axios from "axios";
-import { Jumbotron, Container } from "reactstrap";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 
+// Home page
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
+            // For input text
             input: "",
+            // For displaying results
             results: undefined,
+            // For loading animation
             loading: false
         };
     }
 
+    // Function to handle input change
     handleChange(e) {
         this.setState({ input: e.target.value });
     }
 
+    // Function to execute when you hit 'Search'
     handleSubmit(e) {
         e.preventDefault();
-        // const params = new URLSearchParams();
-        // params.append('location', this.state.input)
+        // if input empyt, dont show results
         if (this.state.input === "") {
             this.setState({ results: undefined });
         } else {
+            // Prepare loading animation
             this.setState({ loading: true });
             axios
                 .get("http://localhost:8000/fetch", {

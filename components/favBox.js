@@ -33,7 +33,6 @@ class FavBox extends React.Component {
             .then(data => {
                 //
                 axios.get("http://localhost:8000/get").then(result => {
-                    console.log("Very deep");
                     this.props.onResultChange(result.data.data);
                 });
             })

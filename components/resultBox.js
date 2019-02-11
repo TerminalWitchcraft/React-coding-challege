@@ -20,10 +20,6 @@ class ResultBox extends React.Component {
     }
 
     handleToggle(e, locationName) {
-        // console.log(e.target.id)
-        // console.log(e.target.checked)
-        console.log(e.target);
-        console.log(locationName);
         let mark = false;
         if (e.target.checked === true) {
             mark = true;
