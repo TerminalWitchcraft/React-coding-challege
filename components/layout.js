@@ -25,7 +25,7 @@ export default ({ children, title = 'React Challenge App' }) => (
           <NavbarBrand href="/">Home</NavbarBrand>
         <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/components/">Favourites</NavLink>
+                <NavLink href="/favs">Favourites</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="https://github.com/TermminalWitchcraft">GitHub</NavLink>

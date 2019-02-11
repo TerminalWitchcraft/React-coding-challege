@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import Layout from '../components/layout'
+import Loader from '../components/spinner'
 import ResultBox from '../components/resultBox'
 import React from 'react'
 import axios from 'axios'
@@ -15,6 +16,7 @@ class Home extends React.Component {
         this.state = {
             input: "",
             results: undefined,
+            loading: false,
         };
     }
 
@@ -26,9 +28,17 @@ class Home extends React.Component {
         e.preventDefault();
         // const params = new URLSearchParams();
         // params.append('location', this.state.input)
+        if (this.state.input === "") {
+            this.setState({results: undefined})
+        } else {
+        this.setState({loading: true})
         axios.get("http://localhost:8000/fetch", {params: {query: this.state.input}})
-            .then(result => {console.log(result)
-            this.setState({results: result.data})})
+            .then(result => {
+            this.setState({results: result.data,
+                loading:false}
+                )}
+            )
+        }
     }
 
     render() {
@@ -50,17 +60,15 @@ class Home extends React.Component {
                             placeholder="Type..."
                           />
                         </FormGroup>
-                        <Button color="primary" >Search!</Button>
+                        <Button color="primary" >Search</Button>
                         </Form>
+                        <hr className="my-2" />
+                        <div>
+            {this.state.loading && <Loader loading={this.state.loading}/>}
+            {!this.state.loading && <ResultBox resultList={this.state.results} />}
+                        </div>
                         </Container>
                     </Jumbotron>
-                    <div>
-                    <Jumbotron fluid>
-                        <Container fluid>
-                        <ResultBox resultList={this.state.results} />
-                        </Container>
-                    </Jumbotron>
-                    </div>
                 </div>
             </Layout>)
     }
