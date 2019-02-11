@@ -13,17 +13,13 @@ import {
     CustomInput
 } from "reactstrap";
 
-class ResultBox extends React.Component {
+class FavBox extends React.Component {
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
     }
 
     handleToggle(e, locationName) {
-        // console.log(e.target.id)
-        // console.log(e.target.checked)
-        console.log(e.target);
-        console.log(locationName);
         let mark = false;
         if (e.target.checked === true) {
             mark = true;
@@ -34,15 +30,22 @@ class ResultBox extends React.Component {
                 businessLocation: locationName,
                 mark: mark
             })
+            .then(data => {
+                //
+                axios.get("http://localhost:8000/get").then(result => {
+                    console.log("Very deep");
+                    this.props.onResultChange(result.data.data);
+                });
+            })
             .catch(err => console.log(err));
     }
 
     render() {
         const results = this.props.resultList;
-        if (this.props.resultList === undefined) {
+        if (results === undefined || results.length == 0) {
             return (
-                <Alert color="warning">
-                    Type search term and hit 'Enter' to display results
+                <Alert color="info">
+                    You do not have any favourites. Go ahead and add some!
                 </Alert>
             );
         } else {
@@ -51,28 +54,30 @@ class ResultBox extends React.Component {
                     <ListGroup>
                         <FormGroup>
                             <Label for="exampleCheckbox">
-                                Showing{" "}
-                                {this.props.resultList.businesses.length} of{" "}
-                                {this.props.resultList.total} (Toggle switch to
-                                mark as favourite){" "}
+                                Your favourites (Toggle switch to mark as
+                                favourite){" "}
                             </Label>
-                            {this.props.resultList.businesses.map(item => (
+                            {results.map(item => (
                                 <ListGroupItem key={item.id}>
                                     <CustomInput
                                         type="switch"
                                         onChange={e =>
                                             this.handleToggle(
                                                 e,
-                                                item.location.display_address.join(
-                                                    ", "
-                                                )
+                                                item.businessLocation
                                             )
                                         }
-                                        id={item.id}
+                                        id={item.businessId}
+                                        key={item.businessId}
                                         name="customSwitch"
-                                        label={item.location.display_address.join(
-                                            ", "
-                                        )}
+                                        label={item.businessLocation}
+                                        checked={item.businessId}
+                                        onChange={e =>
+                                            this.handleToggle(
+                                                e,
+                                                item.businessLocation
+                                            )
+                                        }
                                     />
                                 </ListGroupItem>
                             ))}
@@ -84,4 +89,4 @@ class ResultBox extends React.Component {
     }
 }
 
-export default ResultBox;
+export default FavBox;
